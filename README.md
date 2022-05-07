@@ -2,11 +2,11 @@
 
 Playwright end-to-end test automation with Cucumber
 ## Pre Requisites
-
-* To install Playwright : npm install playwright --save-dev
-* To install Cucumber : npm install cucumber --save-dev
-* To install Junit Reporter : npm install cucumberjs-junitxml --save-dev
-* To install Chai : npm install chai --save-dev
+* clone the project
+* npm install playwright --save-dev
+* npm install cucumber --save-dev
+* npm install cucumberjs-junitxml --save-dev
+* npm install chai --save-dev
 
 
 ## Getting Started
