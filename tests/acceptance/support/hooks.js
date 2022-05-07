@@ -4,113 +4,30 @@ const fs = require ('fs')
 const path = require('path');
 const { test, expect , base} = require('@playwright/test');
 const debug = require('debug');
-//const cucumber = require('cucumber');
+const rimraf =require('rimraf');
+const automationUtils =require('../support/automationUtils')
 
 
 setDefaultTimeout(60000)
 
-// launch the browser
-BeforeAll(async function () {
-    let page;
-    // global.browser = await chromium.launch({
-    // channel: 'msedge',
-    // headless: false,
-    // slowMo: 1000,
-    // use: {
-    // screenshot: 'only-on-failure',
-    // trace: 'retain-on-failure',
-    // },
-    // });
-
-    global.browser = await firefox.launch({
-        headless: false,
-        slowMo: 1000,
-        // use: {
-        // screenshot: 'only-on-failure',
-        // trace: 'retain-on-failure',
-        // },
-        // fullyParallel: true,
-    });
-
-    // global.browser = await chromium.launch({
-    // channel: 'chrome',
-    // headless: false,
-    // slowMo: 1000,
-    // use: {
-    // screenshot: 'only-on-failure',
-    // trace: 'retain-on-failure',
-    // },
-    // });
-    // global.browser = await chromium.launch({
-    // headless: false,
-    // slowMo: 1000,
-    // use: {
-    // screenshot: 'only-on-failure',
-    // trace: 'retain-on-failure',
-    // },
-    // });
-    // global.browser = await webkit.launch({
-    // headless: false,
-    // slowMo: 1000,
-    // use: {
-    // screenshot: 'only-on-failure',
-    // trace: 'retain-on-failure',
-    // },
-    // });
-
-});
-//
-// // close the browser
-// AfterAll(async function () {
-//
-// await global.browser.close();
-// });
-//
-// // Create a new browser context and page per scenario
-// Before(async function () {
-// global.context = await global.browser.newContext();
-// global.page = await global.context.newPage();
-// });
-//
-// // Cleanup after each scenario
-// After(async function () {
-//
-// await global.page.screenshot({ path: 'screenshot.png' });
-// await global.page.close();
-// await global.context.close();
-// });
-// // After(async function (this: World, scenario) {
-// // if (scenario.result?.status === Status.PASSED) {
-// // const screenShot = await browser.takeScreenshot();
-// // this.attach(screenShot , "image/png");
-// // }
-// // });
-//
-//
-
-
-
 
 // Launch options.
-// const options = {
-// headless: true,
-// slowMo: 100
-// };
+const options = {
+    headless: false,
+    slowMo: 100,
+    video: "off",
+    trace: "on-first-retry",
 
+};
 
+BeforeAll(async function () {
 
-
-
-// BeforeAll(async () => {
-// browser = await chromium.launch({ headless: false });
-// page = await browser.newPage();
-// });
-
-// Create a global browser for the test session.
-// BeforeAll(async () => {
-// console.log('before all ...');
-// global.browser = await firefox.launch(options);
-// });
+    const browserName = process.env.BROWSER || 'chromium'
+    global.browser = await { chromium, webkit, firefox }[browserName].launch({
+        headless: false,
+        slowMo: 50,
+    })
+})
 
 AfterAll(async () => {
     await global.browser.close();
@@ -118,7 +35,15 @@ AfterAll(async () => {
 
 // Create a fresh browser context for each test.
 Before(async () => {
-    global.context = await global.browser.newContext();
+    global.context = await global.browser.newContext({
+        viewport: {
+            width: 1660,
+            height: 980,
+        },
+        recordVideo: {
+            dir: './videos/'
+        }
+    });
     global.page = await global.context.newPage();
 });
 
@@ -128,25 +53,21 @@ After(async () => {
     await global.context.close();
 });
 
-
-// After(async function (scenario) {
-// if (scenario.result.status === Status.FAILED) {
-// console.log('Take a screenshot!!');
-// var buffer = await global.page.screenshot({ path: `reports/${scenario.pickle.name}.png`, fullPage: true })
-// this.attach(buffer, 'image/png');
-// }
-// });
 After(async function (scenario) {
-    let world = this;
-    await takeScreenShotOnFailure(world, scenario);
-});
-
-
-async function takeScreenShotOnFailure(world, scenario) {
-    if (scenario.result.status !== Status.FAILED) {
-        return;
+    if (scenario.result.status === Status.FAILED) {
+        const screenshot = await page.screenshot({ path: './screenshots/' + scenario.pickle.name + '.png', fullPage: true })
+        this.attach(screenshot, 'image/png')
+        console.log('[ FAILED ] Scenario : ' + scenario.pickle.name)
+        await page.waitForTimeout(2000)
+        const videoName = await page.video().path()
+        fs.rename(videoName, 'videos/' + scenario.pickle.name + '.webm', (async () => await console.log('Video Taken')))
     }
-    //browser.screenshot
-    console.log('Take a screenshot!!');
-    return page.screenshot({ path: 'screenshot.png' });
-}
+    await global.page.close();
+})
+
+Before(async function(){
+    automationUtils.deleteDirectory('screenshots');
+    automationUtils.deleteDirectory('videos');
+    automationUtils.createDirectory('videos');
+    automationUtils.createDirectory('screenshots');
+})

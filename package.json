@@ -4,10 +4,11 @@
   "description": "Playwright end-to-end test automation with Cucumber",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf report/",
-    "test": "cucumber-js --parallel 1 -f json:report/report.json && node report.js && cat report/report.json | npx cucumber-junit > report/junitreport.xml"
+    "clean": "rm -rf report",
+    "removeVideos": "rm -rf videos",
+    "removeScreenshots": "rm -rf screenshots",
+    "test": "cucumber-js --parallel 1 -f json:build/json/cucumber_report.json && node report.js && cat build/json/cucumber_report.json | npx cucumber-junit > build/report/junitreport.xml"
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/Kusams/playwright_cucumber_javascript.git"
@@ -33,6 +34,9 @@
     "@cucumber/cucumber": "^8.1.2",
     "@playwright/test": "^1.21.1",
     "cucumber-html-reporter": "^5.5.0",
-    "multiple-cucumber-html-reporter": "^1.18.0"
+    "fs": "^0.0.1-security",
+    "mkdirp": "^1.0.4",
+    "multiple-cucumber-html-reporter": "^1.18.0",
+    "rimraf": "^3.0.2"
   }
 }
