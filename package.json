@@ -1,0 +1,38 @@
+{
+  "name": "playwright_cucumber_javascript",
+  "version": "1.0.0",
+  "description": "Playwright end-to-end test automation with Cucumber",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf report/",
+    "test": "cucumber-js --parallel 1 -f json:report/report.json && node report.js && cat report/report.json | npx cucumber-junit > report/junitreport.xml"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kusams/playwright_cucumber_javascript.git"
+  },
+  "author": "Srinivas Kusam",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "cucumber-junit": "^1.7.1",
+    "cucumberjs-junitxml": "^1.0.0",
+    "playwright": "^1.9.1"
+  },
+  "keywords": [
+    "playwright",
+    "playwright automation",
+    "e2e",
+    "e2e tests",
+    "integration test",
+    "test automation",
+    "javascript"
+  ],
+  "dependencies": {
+    "@cucumber/cucumber": "^8.1.2",
+    "@playwright/test": "^1.21.1",
+    "cucumber-html-reporter": "^5.5.0",
+    "multiple-cucumber-html-reporter": "^1.18.0"
+  }
+}

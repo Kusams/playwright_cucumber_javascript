@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite name="as-a-customer-i-should-successfully-login-to-mercury-tours-site;verify-the-mercury-tours-home-page" tests="3" failures="0" skipped="0">
+        <properties>
+            <property name="URI" value="tests/acceptance/features/login_employer.feature">
+            </property>
+        </properties>
+        <testcase name="Given I am an authenticated Mercury Tours user" classname="as-a-customer-i-should-successfully-login-to-mercury-tours-site;verify-the-mercury-tours-home-page" time="6.84343754">
+        </testcase>
+        <testcase name="When I enter the &quot;employer&quot; credentials and click login" classname="as-a-customer-i-should-successfully-login-to-mercury-tours-site;verify-the-mercury-tours-home-page" time="3.31302504">
+        </testcase>
+        <testcase name="Then I verify the &quot;employer&quot; home page displayed" classname="as-a-customer-i-should-successfully-login-to-mercury-tours-site;verify-the-mercury-tours-home-page" time="0.053896084">
+        </testcase>
+    </testsuite>
+</testsuites>
