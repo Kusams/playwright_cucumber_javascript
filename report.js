@@ -17,8 +17,7 @@
 //      }
 // }
 // reporter.generate(options)
-
-
+const browserCaps = require('./browserCaps/browserCapValues.json')
 const report = require('multiple-cucumber-html-reporter');
 report.generate({
     displayDuration: true,
@@ -27,19 +26,19 @@ report.generate({
     reportPath: `build/report`,
     metadata:{
         browser: {
-            name: 'chrome',
-            version: '60'
+            name: browserCaps.browserName,
+            version: browserCaps.browserVersion
         },
         device: 'Local test machine',
         platform: {
-            name: 'ubuntu',
-            version: '16.04'
+            name: browserCaps.osName,
+            version: browserCaps.osVersion
         }
     },
     customData: {
         title: 'Run info',
         data: [
-            {label: 'Project', value: 'Custom project'},
+            {label: 'Project', value: 'Mercury Tours home page'},
             {label: 'Release', value: '1.2.3'},
             {label: 'Execution Date', value: new Date().toDateString()},
             {label: 'Execution Start Time', value: new Date().toLocaleTimeString()},

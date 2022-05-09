@@ -6,7 +6,7 @@ const { test, expect , base} = require('@playwright/test');
 const debug = require('debug');
 const rimraf =require('rimraf');
 const automationUtils =require('../support/automationUtils')
-
+const uaParser = require("ua-parser-js");
 
 setDefaultTimeout(60000)
 
@@ -24,7 +24,7 @@ BeforeAll(async function () {
 
     const browserName = process.env.BROWSER || 'chromium'
     global.browser = await { chromium, webkit, firefox }[browserName].launch({
-        headless: false,
+        headless: true,
         slowMo: 50,
     })
 })
@@ -46,6 +46,24 @@ Before(async () => {
     });
     global.page = await global.context.newPage();
 });
+
+// async function writeJsonFile(json, plan) {
+//
+// }
+
+Before(async () => {
+    const getUA = await global.page.evaluate(() => navigator.userAgent);
+    const userAgentInfo = uaParser(getUA);
+    const browserName = userAgentInfo.browser.name;
+    const browserCapValues = {
+        browserName: userAgentInfo.browser.name,
+        browserVersion: userAgentInfo.browser.version,
+        osName: userAgentInfo.os.name,
+        osVersion: userAgentInfo.os.version
+    };
+    await fs.writeFileSync('browserCaps/browserCapValues.json', JSON.stringify(browserCapValues));
+})
+
 
 // close the page and context after each test.
 After(async () => {
