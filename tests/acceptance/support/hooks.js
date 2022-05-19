@@ -1,4 +1,4 @@
-const {BeforeAll, Before, AfterAll, After, setDefaultTimeout, HookScenarioResult, Status ,world} = require ('@cucumber/cucumber')
+const {BeforeAll, Before, AfterAll, After, setDefaultTimeout, HookScenarioResult, Status ,world, BeforeStep} = require ('@cucumber/cucumber')
 const { Browser , chromium , playwright , browser , firefox ,webkit } = require('playwright');
 const fs = require ('fs')
 const path = require('path');
@@ -24,17 +24,9 @@ BeforeAll(async function () {
 
     const browserName = process.env.BROWSER || 'chromium'
     global.browser = await { chromium, webkit, firefox }[browserName].launch({
-        headless: true,
+        headless: false,
         slowMo: 50,
     })
-})
-
-AfterAll(async () => {
-    await global.browser.close();
-});
-
-// Create a fresh browser context for each test.
-Before(async () => {
     global.context = await global.browser.newContext({
         viewport: {
             width: 1660,
@@ -45,16 +37,9 @@ Before(async () => {
         }
     });
     global.page = await global.context.newPage();
-});
-
-// async function writeJsonFile(json, plan) {
-//
-// }
-
-Before(async () => {
     const getUA = await global.page.evaluate(() => navigator.userAgent);
     const userAgentInfo = uaParser(getUA);
-    const browserName = userAgentInfo.browser.name;
+    //const browserNames = userAgentInfo.browser.name;
     const browserCapValues = {
         browserName: userAgentInfo.browser.name,
         browserVersion: userAgentInfo.browser.version,
@@ -64,12 +49,47 @@ Before(async () => {
     await fs.writeFileSync('browserCaps/browserCapValues.json', JSON.stringify(browserCapValues));
 })
 
+// AfterAll(async () => {
+//     // await global.browser.close();
+//
+//     await global.page.close();
+//     await global.context.close();
+//     await global.browser.close();
+// });
 
-// close the page and context after each test.
-After(async () => {
-    await global.page.close();
-    await global.context.close();
-});
+// Create a fresh browser context for each test.
+// Before(async () => {
+//     global.context = await global.browser.newContext({
+//         viewport: {
+//             width: 1660,
+//             height: 980,
+//         },
+//         recordVideo: {
+//             dir: './videos/'
+//         }
+//     });
+//     global.page = await global.context.newPage();
+// });
+
+// Before(async () => {
+//     const getUA = await global.page.evaluate(() => navigator.userAgent);
+//     const userAgentInfo = uaParser(getUA);
+//     const browserName = userAgentInfo.browser.name;
+//     const browserCapValues = {
+//         browserName: userAgentInfo.browser.name,
+//         browserVersion: userAgentInfo.browser.version,
+//         osName: userAgentInfo.os.name,
+//         osVersion: userAgentInfo.os.version
+//     };
+//     await fs.writeFileSync('browserCaps/browserCapValues.json', JSON.stringify(browserCapValues));
+// })
+
+
+// // close the page and context after each test.
+// After(async () => {
+//     //await global.page.close();
+//     //await global.context.close();
+// });
 
 After(async function (scenario) {
     if (scenario.result.status === Status.FAILED) {
@@ -80,7 +100,6 @@ After(async function (scenario) {
         const videoName = await page.video().path()
         fs.rename(videoName, 'videos/' + scenario.pickle.name + '.webm', (async () => await console.log('Video Taken')))
     }
-    await global.page.close();
 })
 
 Before(async function(){

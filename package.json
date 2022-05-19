@@ -17,7 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.3.6",
-    "cucumber-junit": "^1.7.1",
+    "cucumber-junit": "^1.5.0",
     "cucumberjs-junitxml": "^1.0.0",
     "playwright": "^1.9.1",
     "ua-parser-js": "^1.0.2"
@@ -37,7 +37,7 @@
     "cucumber-html-reporter": "^5.5.0",
     "fs": "^0.0.1-security",
     "mkdirp": "^1.0.4",
-    "multiple-cucumber-html-reporter": "^1.18.0",
+    "multiple-cucumber-html-reporter": "^1.20.0",
     "node-fetch": "^2.6.1",
     "rimraf": "^3.0.2",
     "write-json-file": "^5.0.0"

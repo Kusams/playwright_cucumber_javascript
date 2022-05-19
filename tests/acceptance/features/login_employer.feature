@@ -8,3 +8,11 @@ Feature: As a customer I should successfully login to Mercury Tours site
     Examples:
       | typeOfLogin |
       | employer    |
+
+  Scenario Outline: Verify employer can search the flights
+    Given I select "<sideMenu>" from side menu navigation
+    And  I wait for flight page to be displayed
+    Then  I select the flight from "<fromFlight>" to "<toFlight>"
+    Examples:
+      | sideMenu | fromFlight | toFlight |
+      | Flights  | Sydney     | Zurich   |
