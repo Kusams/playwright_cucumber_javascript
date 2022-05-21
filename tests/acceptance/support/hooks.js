@@ -17,6 +17,7 @@ const options = {
     slowMo: 100,
     video: "off",
     trace: "on-first-retry",
+    parallel: true
 
 };
 
@@ -26,6 +27,7 @@ BeforeAll(async function () {
     global.browser = await { chromium, webkit, firefox }[browserName].launch({
         headless: false,
         slowMo: 50,
+        fullyParallel: true,
     })
     global.context = await global.browser.newContext({
         viewport: {
@@ -49,13 +51,13 @@ BeforeAll(async function () {
     await fs.writeFileSync('browserCaps/browserCapValues.json', JSON.stringify(browserCapValues));
 })
 
-// AfterAll(async () => {
-//     // await global.browser.close();
-//
-//     await global.page.close();
-//     await global.context.close();
-//     await global.browser.close();
-// });
+AfterAll(async () => {
+    // await global.browser.close();
+
+    // await global.page.close();
+    // await global.context.close();
+    await global.browser.close();
+});
 
 // Create a fresh browser context for each test.
 // Before(async () => {
