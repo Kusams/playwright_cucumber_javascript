@@ -6,8 +6,9 @@ const {LoginPage} = require('../page_object/login.page')
 
 const loginpage = new LoginPage();
 
-Given('I am an authenticated Mercury Tours user', async()=>{
+Given('I login as {string} into Mercury Tours application', async(typeOfLogin)=>{
     await loginpage.goto();
+    return console.log(' login as '+typeOfLogin);
 
 });
 
@@ -15,6 +16,6 @@ When("I enter the {string} credentials and click login", async function (typeOfL
     await loginpage.login(typeOfLogin);
 });
 
-Then("I verify the {string} home page displayed", async function (typeOfLogin){
-    await loginpage.homePageDisplayed(typeOfLogin);
+Then("I verify the home page displayed", async function (){
+    await loginpage.homePageDisplayed();
 });

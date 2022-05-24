@@ -42,14 +42,10 @@ exports.LoginPage = class LoginPage {
         await page.locator('text=Submit').click();
     }
 
-    async homePageDisplayed(typeOfLogin) {
-        if (typeOfLogin === 'employer') {
+    async homePageDisplayed() {
              const successfullLoginMessage = page.locator('text=Login Successfully');
             // //await page.waitForLoadState('networkidle'); // This resolves after 'networkidle'
             await successfullLoginMessage.waitFor();
-        }
-        else {
 
-        }
     }
 }

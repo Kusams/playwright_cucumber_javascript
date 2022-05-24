@@ -3,18 +3,22 @@ const {Given, When, Then} = require('@cucumber/cucumber')
 const { expect } = require("@playwright/test");
 const {bookTicketPage} = require('../page_object/bookFlight.page')
 
-
 const bookFlightTicketPage = new bookTicketPage();
 
 Given('I select {string} from side menu navigation', async(Flights)=> {
     await bookFlightTicketPage.selectSideMenu(Flights);
-    // await page.frameLocator('[aria-label="Advertisement"]').frameLocator('iframe[name="ad_iframe"]').locator('[aria-label="Close ad"]')._isPresent().then(async function (){
-    //     await page.frameLocator('[aria-label="Advertisement"]').frameLocator('iframe[name="ad_iframe"]').locator('[aria-label="Close ad"]').click();
-    // });
 });
 
 When("I wait for flight page to be displayed", async()=>{
     await bookFlightTicketPage.flightPageIsDisplayed();
+});
+
+When("I wait for destination page to be displayed", async()=>{
+    return console.log('landed on destination page')
+});
+
+When("I go back to home page from destination page", async()=>{
+    await bookFlightTicketPage.destinationPageIsDisplayed();
 });
 
 When("I select the flight from {string} to {string}", async function (fromFlight,toFlight) {

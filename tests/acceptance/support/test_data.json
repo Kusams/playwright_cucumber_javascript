@@ -1,11 +1,15 @@
 {
-    "employer": {
+  "employer": {
     "Username": "Traveler",
-        "Password": "Myfirsttour"
-},
-    "customer": {
-    "Username": "Traveler",
-        "Password": "Myfirsttour"
+    "Password": "Myfirsttour"
+  },
+  "customer": {
+    "Username": "Customer",
+    "Password": "Myfirsttour"
+  },
+  "Investor": {
+    "Username": "Investor",
+    "Password": "Myfirsttour"
+  }
 }
 
-}
